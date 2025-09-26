@@ -3,7 +3,7 @@ from qiskit.quantum_info import Statevector
 from numpy.random import randint
 from math import pi
 
-qc = QuantumCircuit(7)
+qc = QuantumCircuit(7,3)
 
 # part 1
 # haddamard gates on bit 0/1/2
@@ -50,9 +50,15 @@ qc.cx(1,2)
 
 # part 11
 
-
 # part 12
 qc.h(2)
 
 
 # part 13
+qc.measure(range(7), range(3))
+print(qc.draw())
+simulator = AerSimulator()
+qc = transpile(qc, simulator)
+
+result = simulator.run(qc).result()
+counts = result.get_counts(qc)
