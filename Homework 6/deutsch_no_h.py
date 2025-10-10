@@ -61,5 +61,6 @@ print("The state measured is a superposition of |01> and |00> when it's f(2), ar
 
 
 print("This also means that the input qubit is in a superposition of |0> and |1> regardless if f(x) is balanced (f1,f2) or constant (f3,f0)")
+print("U_f is hard to analyze here since we can't know which formula (f0/f1/f2/f3) is used. (Unless you know the inside of the black box of course)")
 print("The measurement also tells us that all the counts aren't equal, but are roughly like a 50% chance")
 print("This makes me think this is a lienar combo of bell states")

@@ -51,9 +51,10 @@ counts = result.get_counts(qc)
 print("Measurement Results: ", counts)
 
 
-#Print Statements for Question 2
+#Print Statements for Question 3
 #"Explain the conclusion that we may draw from the results of the measurement"
 print("Conclusion: ")
-print("The state measured is 01 when it's f(1), f(2),f(3), ")
-print("This also means that the input qubit is |1> if f(x) is constant (f3,f0) and |0> if f(x) is balanced (f1,f2)")
+print("The state measured is 01 when it's f(0), f(1), f(2),f(3), ")
+print("This also means that the input qubit is |1> regardless if balanced or constant")
+print("U_f is pretty much useless here since you can't really tell what formula (f0/f1/f2/f3) is used. (RIP the Gators)")
 print("The measurement also tells us that all the counts are equal")
