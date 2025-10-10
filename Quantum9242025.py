@@ -65,4 +65,8 @@ counts = result.get_counts(qc3)
 print("Measurement Results: ", counts)
 # written in random order i guess? 0-4
 # this just draws it tho. now u have to use qiskit aer to actually simulate it
+# 1024 since it runs 2^10 times. let's make output a percentage.
 
+# so 100% of the time (1024/1024 counts) you get the state "10011", which can be easily seen from circuit diagram. 
+
+# figure out venv, don't need to pip install everything on my laptop. also figure out the easy CLI commands, and make it so i can do "py [name].py"
