@@ -5,7 +5,7 @@ from math import pi
 from qiskit_aer import AerSimulator
 
 #1. Implement Circuit for Deutsch's Algorithm
-qc = QuantumCircuit(2,2)
+qc = QuantumCircuit(2,1)
 
 #Apply X and Haddamard Gate to Input Qubit
 qc.x(0)
@@ -18,7 +18,7 @@ qc.h(1)
 #unitary Encoding Function 
 #generate random ints from 0 to 3
 num = randint(0,4)
-print("Random Int: ", num)
+print("Random Int: ", num, " so Function Chosen: f(", num, ")")
 #case statement for the random int to apply to its corresponding f
 match num:
     case 0:
@@ -49,11 +49,24 @@ simulator = AerSimulator()
 qc = transpile(qc, simulator)
 result = simulator.run(qc).result()
 counts = result.get_counts(qc)
-print("Measurement Results: ", counts)
+print("Measurement Results With Counts: ", counts)
+
+# to make it percentages, realize counts is a python dict. the values are the numbers, and the key is the state
+print("Measurement Results as Percentages: ")
+for key,count in counts.items():
+    percent = (count/1024)*100
+
+    # #use numShots when finding percent since i'm not using 1024 default
+    # percent = (count/numShots)*100
+
+    #format print to print the keys w 2 decimal places
+    print("Input Qubit measured as:", sep ="")
+    print(f"{key}: {percent:.2f}%")
 
 
 #Print Statements for Question 2
 #"Explain the conclusion that we may draw from the results of the measurement"
 print("Conclusion: ")
-print("The state of the measured input qubit is 00 when it's f(1), f(2), state 01 when f(3), ")
-print("The state of the output qubit is |1> if f(x) is constant and |0> if f(x) is balanced.")
+print("The input qubit is measured as 0 100% of the time when it's f(1), f(2) (U_f is balanced),")
+print("and as 1 100% of the time when f(3),f(0) (U_f is constant)")
+

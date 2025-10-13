@@ -5,7 +5,7 @@ from math import pi
 from qiskit_aer import AerSimulator
 
 #1. Implement Circuit for Deutsch's Algorithm
-qc = QuantumCircuit(2,2)
+qc = QuantumCircuit(2,1)
 
 #Apply X and Haddamard Gate to Input Qubit
 qc.x(0)
@@ -17,7 +17,7 @@ qc.h(1)
 #unitary Encoding Function 
 #generate random ints from 0 to 3
 num = randint(0,4)
-print("Random Int: ", num)
+print("Random Int: ", num, " so Function Chosen: f(", num, ")")
 #case statement for the random int to apply to its corresponding f
 match num:
     case 0:
@@ -48,13 +48,25 @@ simulator = AerSimulator()
 qc = transpile(qc, simulator)
 result = simulator.run(qc).result()
 counts = result.get_counts(qc)
-print("Measurement Results: ", counts)
+print("Measurement Results With Counts: ", counts)
+
+# to make it percentages, realize counts is a python dict. the values are the numbers, and the key is the state
+print("Measurement Results as Percentages: ")
+for key,count in counts.items():
+    percent = (count/1024)*100
+
+    # #use numShots when finding percent since i'm not using 1024 default
+    # percent = (count/numShots)*100
+
+    #format print to print the keys w 2 decimal places
+    print(f"{key}: {percent:.2f}%")
 
 
 #Print Statements for Question 3
 #"Explain the conclusion that we may draw from the results of the measurement"
 print("Conclusion: ")
-print("The state measured is 01 when it's f(0), f(1), f(2),f(3), ")
-print("This also means that the input qubit is |1> regardless if balanced or constant")
-print("U_f is pretty much useless here since you can't really tell what formula (f0/f1/f2/f3) is used. (RIP the Gators)")
-print("The measurement also tells us that all the counts are equal")
+print("After omitting the initial X gate on the output qubit, the input qubit is measured")
+print("as 1 100% of the time regardless of U_f, which means we cannot draw any meaningful")
+print("conclusions about the black box U_f")
+print()
+print("(even though technically you can see it in the circuit drawing in this programs output)")
