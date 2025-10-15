@@ -4,10 +4,66 @@ from numpy.random import randint
 from math import pi
 from qiskit_aer import AerSimulator
 
-# generate five random classical bits (0 or 1)
+#generate five random cbits (0 or 1) in an array
 bits = {}
-for i in range(0,4):
+for i in range(0,5):
     bits[i] = randint(0,2)
     print(f"{bits[i]}")
-
 print(f"{bits}")
+
+#5 input qbits, 1 output qbit
+qc = QuantumCircuit(6,5) # need 5 cbits since wem easure the 5 input bits
+# haddamard the 5 input bits
+qc.h(0)
+qc.h(1)
+qc.h(2)
+qc.h(3)
+qc.h(4)
+#NOT and haddmard the output bit
+qc.x(5)
+qc.h(5)
+#blackbox U_f, ax
+qc.barrier()
+for j in range(5):
+    if bits[j] == 1:
+        qc.cx(j,5)
+qc.barrier()
+
+# part 6 - haddamard layer all bits
+qc.h(0)
+qc.h(1)
+qc.h(2)
+qc.h(3)
+qc.h(4)
+qc.h(5)
+
+#measure input register bits
+qc.measure([0,1,2,3,4], [0,1,2,3,4])
+
+#draw
+print(qc.draw())
+
+# use simulator
+simulator = AerSimulator()
+qc = transpile(qc, simulator)
+result = simulator.run(qc).result()
+counts = result.get_counts(qc)
+print("Measurement Results With Counts: ", counts)
+
+# to make it percentages, realize counts is a python dict. the values are the numbers, and the key is the state
+print("Measurement Results as Percentages: ")
+for key,count in counts.items():
+    percent = (count/1024)*100
+    print(f"{key}: {percent:.2f}%")
+
+#print bit string of a
+print("Results:")
+print(f"Original bit string: {bits[0]}{bits[1]}{bits[2]}{bits[3]}{bits[4]}")
+
+# get measured bit string
+measured = max(counts, key=counts.get) # key w/ highest count
+print(f"Measured bit string (measurements): {measured}")
+
+# apparently need big endian to show uit correctly
+measured2 = measured[::-1]
+print(f"new measured: {measured2}")
