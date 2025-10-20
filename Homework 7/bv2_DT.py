@@ -1,42 +1,40 @@
+# 1. write a script bv1.py
+
+from re import A
 from qiskit import QuantumCircuit, transpile
 from qiskit.quantum_info import Statevector
 from numpy.random import randint
 from math import pi
 from qiskit_aer import AerSimulator
 
-#generate five random cbits (0 or 1) in an array
-bits = {}
-for i in range(0,5):
-    bits[i] = randint(0,2)
-    print(f"{bits[i]}")
-print(f"{bits}")
+#2. 5 random Cbits stored in array a
 
+#generate five random bits (0 or 1) in an array
+a = [0,0,0,0,0]
+for i in range(0,5):
+    a[i] = randint(0,2)
+    # print(f"{bits[i]}")
+print("Original bit string for A (in Python array form) ", a)
+
+
+#3. 
 #5 input qbits, 1 output qbit
 qc = QuantumCircuit(6,5) # need 5 cbits since wem easure the 5 input bits
-# haddamard the 5 input bits
-qc.h(0)
-qc.h(1)
-qc.h(2)
-qc.h(3)
-qc.h(4)
+
+#4.
+#no haddamards, just NOT on output bit
 #NOT and haddmard the output bit
 qc.x(5)
-qc.h(5)
+
+#5.
 #blackbox U_f, ax
 qc.barrier()
 for j in range(5):
-    if bits[j] == 1:
-        qc.cx(j,5)
+    if a[j] == 1:
+        qc.cx(5,j)
 qc.barrier()
 
-# part 6 - haddamard layer all bits
-qc.h(0)
-qc.h(1)
-qc.h(2)
-qc.h(3)
-qc.h(4)
-qc.h(5)
-
+#6.
 #measure input register bits
 qc.measure([0,1,2,3,4], [0,1,2,3,4])
 
@@ -57,13 +55,13 @@ for key,count in counts.items():
     print(f"{key}: {percent:.2f}%")
 
 #print bit string of a
-print("Results:")
-print(f"Original bit string: {bits[0]}{bits[1]}{bits[2]}{bits[3]}{bits[4]}")
+print("\nResults:")
+#youll notice here it looks reversed from the first print line, but it's python printing of an array vs the actual bit 
+#string the way we typically look at it in binary
+print(f"Original bit string for A (not as Python array form): {a[4]}{a[3]}{a[2]}{a[1]}{a[0]}")
 
-# get measured bit string
+#get measured bit string
 measured = max(counts, key=counts.get) # key w/ highest count
-print(f"Measured bit string (measurements): {measured}")
-
-# apparently need big endian to show uit correctly
-measured2 = measured[::-1]
-print(f"new measured: {measured2}")
+print(f"Measured bit string for A (before using Big Endian): {measured}")
+measured2 = measured[::-1] # need big endian to show it in order correctly
+print(f"Measured bit string for A (after using Big Endian): {measured2}")
