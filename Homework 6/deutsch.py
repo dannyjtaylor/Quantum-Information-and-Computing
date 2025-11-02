@@ -69,4 +69,5 @@ for key,count in counts.items():
 print("Conclusion: ")
 print("The input qubit is measured as 0 100% of the time when it's f(1), f(2) (U_f is balanced),")
 print("and as 1 100% of the time when f(3),f(0) (U_f is constant)")
+# hi
 

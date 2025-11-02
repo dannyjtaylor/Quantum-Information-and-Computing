@@ -62,6 +62,8 @@ print(f"Original bit string for A (not as Python array form): {a[4]}{a[3]}{a[2]}
 
 #get measured bit string
 measured = max(counts, key=counts.get) # key w/ highest count
-print(f"Measured bit string for A (before using Big Endian): {measured}")
-measured2 = measured[::-1] # need big endian to show it in order correctly
-print(f"Measured bit string for A (after using Big Endian): {measured2}")
+print(f"Measured bit string for A (before reversing): {measured}")
+measured2 = measured[::-1] #perform "reverse", since the bits are in big endian form to show it in order correctly
+print(f"Measured bit string for A (after reversing): {measured2}")
+
+print ("hi")
