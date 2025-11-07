@@ -6,11 +6,13 @@ from qiskit_aer import AerSimulator
 #part 1- initialization o 2-bit grovers algorithm
 qc = QuantumCircuit(3,2)
 #2 cbits for measurement
+#for clarity, output bit first and use barrier
+qc.x(2)
+qc.barrier()
 #input register, 2 bits
 qc.h(0)
 qc.h(1)
 #output register, 1 bit
-qc.x(2)
 qc.h(2)
 
 qc.barrier()
@@ -45,7 +47,6 @@ qc.x(1)
 qc.x(0)
 qc.h(1)
 qc.h(0)
-qc.barrier()
 
 #part 4, -WV gate, looks like for 2-qubit we don't really need to do this beside measure
 #measure input register bits w/ the cbits

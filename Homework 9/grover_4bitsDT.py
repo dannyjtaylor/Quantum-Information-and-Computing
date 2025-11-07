@@ -7,13 +7,15 @@ from qiskit_aer import AerSimulator
 #part 1- initialization o 2-bit grovers algorithm
 qc = QuantumCircuit(5,4)
 #2 cbits for measurement
+#NOT output bit (use barrier for clarity)
+qc.x(4)
+qc.barrier()
 #input register, 2 bits
 qc.h(0)
 qc.h(1)
 qc.h(2)
 qc.h(3)
 #output register, 1 bit
-qc.x(4)
 qc.h(4)
 qc.barrier()
 
@@ -24,16 +26,18 @@ qc.barrier()
 randNumList = [0,0,0,0]
 for i in range(0,4):
     randNumList[i] = randint(0,2)
-print(f"Random 4-bit string: {randNumList[3]}{randNumList[2]}{randNumList[1]}{randNumList[0]}") #done in this way (lil endian)
+#print it reversed since grover algorithm is lil endian
+print(f"Random 4-bit string: {randNumList[::-1]}")
 
-#in the black box you NOT any bit that is regernated to be 1, then ccX those bits with output bit, and then re-NOT the bit that was NOTTED before
+#in the black box you NOT any bit that is generated to be 0, then ccX those bits with output bit, and then re-NOT the bit that was NOTTED before
+#We flip bits that are 0 to 1, so MCX triggers when state matches target (all become 1)
 for i in range(4):
-    if randNumList[i] == 1:
+    if randNumList[i] == 0:
         qc.x(i)
 #multi controlled X gate, controls are all input bits, target is output bit
-qc.mcx([0, 1, 2], 4)
+qc.mcx([0, 1, 2, 3], 4)
 for i in range(4):
-    if randNumList[i] == 1:
+    if randNumList[i] == 0:
         qc.x(i)
 qc.barrier()
 
@@ -44,10 +48,14 @@ qc.barrier()
 for i in range(4):
     qc.h(i)
     qc.x(i)
+qc.barrier()
+
 #4-bit multi controlled Z gate. can go H, MCX, and H
+
 qc.h(3)
 qc.mcx([0, 1, 2], 3)
 qc.h(3)
+qc.barrier()
 
 for i in range(4):
     qc.x(i)
@@ -62,23 +70,26 @@ qc.barrier()
 #V gate again
 pminusOne = 2
 for i in range(pminusOne):
+    #barrier for clarity
     for i in range(4):
-        if randNumList[i] == 1:
+        if randNumList[i] == 0:
             qc.x(i)
     #multi controlled X gate, controls are all input bits, target is output bit
-    qc.mcx([0, 1, 2], 4)
+    qc.mcx([0, 1, 2, 3], 4)
     for i in range(0,4):
-        if randNumList[i] == 1:
+        if randNumList[i] == 0:
             qc.x(i)
     #-W gate again
+    qc.barrier()
     for i in range(4):
         qc.h(i)
         qc.x(i)
-        
+    qc.barrier()
     #4-bit multi controlled Z gate. can go H, MCX, and H
     qc.h(3)
     qc.mcx([0, 1, 2], 3)
     qc.h(3)
+    qc.barrier()
 
     for i in range(4):
         qc.x(i)
